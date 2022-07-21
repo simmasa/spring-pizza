@@ -32,13 +32,13 @@ public class PizzaController {
     return "formapizza";
     }
     @PostMapping("/add")
-    public String PizzaSave(@ModelAttribute("pizza") Pizza pizzadd) {
-//        if (br.hasErrors()) {
-//        return "formapizza";
-//        } else {
+    public String PizzaSave(@Valid @ModelAttribute("pizza") Pizza pizzadd, BindingResult br) {
+        if (br.hasErrors()) {
+        return "formapizza";
+        } else {
             repo.save(pizzadd);
             return "redirect:/";
-//        }
+        }
     }
 
 }

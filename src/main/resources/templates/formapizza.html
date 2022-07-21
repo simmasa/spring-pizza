@@ -7,6 +7,9 @@
     <header th:insert="fragments :: navbar('')"></header>
     <div class="container">
         <form id="pizza-form" th:object="${pizza}" th:action="@{/add}" method="Post">
+            <ul>
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+            </ul>
             <div class="my-3">
                 <label for="name" class="form-label">Nome Pizza</label>
                 <input type="text" class="form-control" id="name" required th:field="*{name}">
