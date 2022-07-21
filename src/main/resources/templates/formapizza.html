@@ -7,12 +7,14 @@
     <header th:insert="fragments :: navbar('')"></header>
     <div class="container">
         <form id="pizza-form" th:object="${pizza}" th:action="@{/add}" method="Post">
-            <ul>
-                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
-            </ul>
             <div class="my-3">
                 <label for="name" class="form-label">Nome Pizza</label>
-                <input type="text" class="form-control" id="name" required th:field="*{name}">
+                <input type="text" class="form-control" id="name" required th:field="*{name}" th:errorClass="is-invalid">
+                <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('name')}" th:text="${err}">
+                    </ul>
+                </div>
                 <div class="form-text">Ricordati di dare un nome alla tua nuova pizza.</div>
             </div>
             <div class="mb-3">
@@ -21,7 +23,12 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">Prezzo</label>
-                <input type="text" class="form-control" id="price" required pattern="[0-9]*[.]?[0-9][0-9]" th:field="*{price}">
+                <input type="text" class="form-control" id="price" required pattern="[0-9]*[.]?[0-9][0-9]" th:field="*{price}" th:errorClass="is-invalid">
+                <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('price')}" th:text="${err}">
+                    </ul>
+                </div>
             </div>
             <button type="submit" class="btn btn-danger my-3">Submit</button>
         </form>
