@@ -1,6 +1,7 @@
 package com.jana60.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pizza")
@@ -10,8 +11,11 @@ public class Pizza {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotNull
+    @Column(unique = true)
     private String name;
     private String description;
+    @NotNull
     private Double price;
 
     public Integer getId() {
