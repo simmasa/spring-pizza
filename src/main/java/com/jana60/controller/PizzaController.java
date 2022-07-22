@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -34,7 +35,20 @@ public class PizzaController {
     }
     @PostMapping("/add")
     public String PizzaSave(@Valid @ModelAttribute("pizza") Pizza pizzadd, BindingResult br) {
-        if (br.hasErrors()) {
+        boolean brError= br.hasErrors();
+        boolean checkName= true;
+        if (pizzadd.getId() != null){
+            Pizza vecia = repo.findById(pizzadd.getId()).get();
+            if (vecia.getName().equals(pizzadd.getName())) {
+                checkName=false;
+            }
+        }
+        if (checkName && repo.countByNameAllIgnoreCase(pizzadd.getName())> 0) {
+            br.addError(new FieldError("pizza", "name", "Il nome deve essere unico"));
+            brError=true;
+        }
+
+        if (brError) {
         return "formapizza";
         } else {
             repo.save(pizzadd);
@@ -49,9 +63,17 @@ public class PizzaController {
             rd.addFlashAttribute("deleted","L'elemento è stato eliminato");
             return "redirect:/";
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "La pizza " + pizid + " non esiste");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza " + pizid + " non esiste");
         }
-
+    }
+    @GetMapping("/edit/{id}")
+    public String PizzaEdit(@PathVariable("id") Integer pizid , Model m){
+        Optional<Pizza> pizEdi = repo.findById(pizid);
+        if (pizEdi.isPresent()) {
+            m.addAttribute("pizza", pizEdi.get());
+            return "formapizza";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza " + pizid + " non esiste");
+        }
     }
 }

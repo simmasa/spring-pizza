@@ -7,6 +7,7 @@
     <header th:insert="fragments :: navbar('')"></header>
     <div class="container">
         <form id="pizza-form" th:object="${pizza}" th:action="@{/add}" method="Post">
+            <input type="hidden" th:field="*{id}">
             <div class="my-3">
                 <label for="name" class="form-label">Nome Pizza</label>
                 <input type="text" class="form-control" id="name" required th:field="*{name}" th:errorClass="is-invalid">
