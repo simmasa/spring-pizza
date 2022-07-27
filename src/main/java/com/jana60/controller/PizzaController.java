@@ -1,6 +1,7 @@
 package com.jana60.controller;
 
 import com.jana60.model.Pizza;
+import com.jana60.repository.IngredientiRepository;
 import com.jana60.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ public class PizzaController {
     @Autowired
     public PizzaRepository repo;
 
+    @Autowired
+    public IngredientiRepository ingRepo;
+
     @GetMapping
     public String Pizza(Model m) {
         m.addAttribute("pizz", repo.findAll());
@@ -31,12 +35,14 @@ public class PizzaController {
     @GetMapping("/add")
     public String PizzAdd(Model m) {
     m.addAttribute("pizza" , new Pizza());
+    m.addAttribute("ingre" , ingRepo.findAll());
     return "formapizza";
     }
     @PostMapping("/add")
     public String PizzaSave(@Valid @ModelAttribute("pizza") Pizza pizzadd, BindingResult br) {
         boolean brError= br.hasErrors();
         boolean checkName= true;
+        System.out.println(pizzadd.getIngredients());
         if (pizzadd.getId() != null){
             Pizza vecia = repo.findById(pizzadd.getId()).get();
             if (vecia.getName().equals(pizzadd.getName())) {
@@ -71,6 +77,7 @@ public class PizzaController {
         Optional<Pizza> pizEdi = repo.findById(pizid);
         if (pizEdi.isPresent()) {
             m.addAttribute("pizza", pizEdi.get());
+            m.addAttribute("ingre", ingRepo.findAll());
             return "formapizza";
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza " + pizid + " non esiste");

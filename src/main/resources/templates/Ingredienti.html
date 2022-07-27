@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments :: metatags(name='Pizza Ingredienti')">
+
+</head>
+<body>
+<header th:insert="fragments :: navbar('ing')"></header>
+<h1 class="text-center">Ecco gli ingredienti delle nostre pizze</h1>
+<!--<div class="container" th:if="${deleted != null && deleted != ''}">
+    <div  class="alert alert-success" th:text="${deleted}"></div>
+</div> -->
+<hr>
+<div class="container">
+    <div class="col-6">
+        <form
+                id="formIng"
+                th:object="${newIngre}"
+                th:action="@{/Ingredienti/add}"
+                method="POST">
+
+            <div class="input-group mb-3">
+                <input th:field="*{name}" type="text" class="form-control">
+                <button class="btn btn-danger" type="submit">Aggiungi Ingrediente</button>
+            </div>
+
+        </form>
+
+        <ul class="list-group" th:if="${ingre.size() > 0}">
+            <li class="list-group-item" th:each="ing : ${ingre}" th:text="${ing.name}">
+            </li>
+        </ul>
+        <div class="alert alert-info my-5"
+             th:unless="${ingre.size() > 0}">
+            <h3>There are no categories yet</h3>
+        </div>
+    </div>
+</div>
+</body>
+</html>
