@@ -4,6 +4,7 @@ import com.jana60.model.Pizza;
 import com.jana60.repository.IngredientiRepository;
 import com.jana60.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -82,5 +84,15 @@ public class PizzaController {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza " + pizid + " non esiste");
         }
+    }
+
+    @GetMapping("/search")
+    public String pizzaSearch (@RequestParam("pizzaQuery") String query, Model m) {
+        if (query!= null && !query.isEmpty()) {
+            List<Pizza> pizzaSearch = repo.findByNameContainsIgnoreCase(query);
+            m.addAttribute("pizz" , pizzaSearch);
+        }
+        return "Index";
+
     }
 }
