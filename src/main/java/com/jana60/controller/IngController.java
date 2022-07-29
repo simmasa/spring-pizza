@@ -19,7 +19,7 @@ public class IngController {
 
     @GetMapping
     public String Ingredienti(Model m) {
-        m.addAttribute("ingre" , repo.findAll());
+        m.addAttribute("ingre" , repo.findAllByOrderByName());
         m.addAttribute("newIngre", new Ingredienti());
         return "Ingredienti";
     }

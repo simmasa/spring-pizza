@@ -4,7 +4,6 @@ import com.jana60.model.Pizza;
 import com.jana60.repository.IngredientiRepository;
 import com.jana60.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +30,7 @@ public class PizzaController {
     @GetMapping
     public String Pizza(Model m) {
         m.addAttribute("pizz", repo.findAll());
-        return "Index";
+        return "Index2";
     }
 
     @GetMapping("/add")
@@ -88,11 +87,11 @@ public class PizzaController {
 
     @GetMapping("/search")
     public String pizzaSearch (@RequestParam("pizzaQuery") String query, Model m) {
-        if (query!= null && !query.isEmpty()) {
-            List<Pizza> pizzaSearch = repo.findByNameContainsIgnoreCase(query);
-            m.addAttribute("pizz" , pizzaSearch);
-        }
-        return "Index";
+
+        List<Pizza> pizzaSearch = repo.findByNameContainsIgnoreCase(query);
+        m.addAttribute("pizz" , pizzaSearch);
+
+        return "Index2";
 
     }
 }

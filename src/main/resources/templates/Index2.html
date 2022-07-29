@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments :: metatags(name='Pizza Home')">
+    
+</head>
+<body>
+    <header th:insert="fragments :: navbar('')"></header>
+    <h1 class="text-center">Ecco le nostre pizze</h1>
+	<div class="container" th:if="${deleted != null && deleted != ''}">
+		<div  class="alert alert-success" th:text="${deleted}"></div>
+	</div>
+    <hr>
+	<div class="container" th:if="${pizz.size() > 0}">
+    	<div class="row row-cols-3">
+            <div class="cols" th:each="p : ${pizz}">
+                <div class="card">
+                    <img src="https://picsum.photos/300/200" class="card-img-top" alt="pizzaImage">
+                    <div class="card-body">
+                      <h5 class="card-title" th:text="${p.name}"></h5>
+                      <p class="card-text" th:text="${p.description}"></p>
+                      <a href="#" class="btn btn-warning">Ordina</a>
+                      <a class="btn btn-danger" title="Delete" th:href="@{|/delete/${p.id}|}" onclick="return confirm('Sei sicuro?')"><i class="fa-solid fa-ban"></i></a>
+                      <a class="btn btn-warning" title="Edit" th:href="@{|/edit/${p.id}|}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="container">
+    <p th:unless="${pizz.size() > 0}" class="text-center">Nessuna pizza trovata</p>
+	<a class="btn btn-danger my-3" href="/add">Aggiungi pizza</a>
+	</div>
+</body>
+</html>
