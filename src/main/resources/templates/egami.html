@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments :: metatags(name='Form a Pizza')">
+
+</head>
+<body>
+<header th:insert="fragments :: navbar('')"></header>
+<div class="container">
+    <form id="image-form" th:object="${form}" th:action="@{/egami/save}" method="Post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{pizza}">
+        <div class="mb-3">
+            <label for="multiData" class="form-label">Add a new image</label>
+            <input class="form-control" type="file" id="multiData" th:field="*{multiData}">
+        </div>
+        <button class="btn btn-primary" type="submit">Salva</button>
+    </form >
+    <div class="row">
+        <div class="col-3 my-3" th:each="img : ${images}">
+            <img th:src="@{|/egami/${img.id}/content|}" class="img-fluid" alt="">
+        </div>
+    </div>
+</div>
+</body>
+</html>
